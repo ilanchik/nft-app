@@ -1,12 +1,50 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { createStackNavigator } from "@react-navigation/stack";
+import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
+import { useFonts } from "expo-font";
+import { StyleSheet } from "react-native";
 
-export default function App() {
+// Screens
+import Home from "./screens/Home";
+import Details from "./screens/Details";
+import LoginScreen from "./screens/LoginScreen";
+import SettingsScreen from "./screens/SettingsScreen";
+
+// Get stack
+const Stack = createStackNavigator();
+
+// Create theme
+const theme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    background: "transparent"
+  }
+}
+
+const App = () => {
+
+  // Fonts
+  const [loaded] = useFonts({
+    InterBold: require('./assets/fonts/Inter-Bold.ttf'),
+    InterSemiBold: require('./assets/fonts/Inter-SemiBold.ttf'),
+    InterMedium: require('./assets/fonts/Inter-Medium.ttf'),
+    InterLight: require('./assets/fonts/Inter-Light.ttf'),
+    InterRegular: require('./assets/fonts/Inter-Regular.ttf'),
+  });
+
+  // Check if fonts/assets loaded
+  if (!loaded) return null;
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer theme={theme}>
+      <Stack.Navigator screenOptions={{ headerShown: false }}
+        initialRouteName="LoginScreen">
+        <Stack.Screen name="LoginScreen" component={LoginScreen} />
+        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="Details" component={Details} />
+        <Stack.Screen name="SettingsScreen" component={SettingsScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
@@ -18,3 +56,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
+export default App;
